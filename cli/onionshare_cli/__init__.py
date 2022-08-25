@@ -39,7 +39,7 @@ def main(cwd=None):
     onionshare uses.
     """
     common = Common()
-    common.display_banner()
+    # common.display_banner()
 
     # OnionShare CLI in OSX needs to change current working directory (#132)
     if common.platform == "Darwin":
@@ -451,16 +451,18 @@ def main(cwd=None):
                 print("")
 
                 if mode_settings.get("general", "public"):
-                    print("Give this address to the sender:")
+                    # print("Give this address to the sender:")
                     print(url)
+                    CreateJsonFile(url)
                 else:
                     print("Give this address and private key to the sender:")
                     print(url)
                     print(f"Private key: {app.auth_string}")
             else:
                 if mode_settings.get("general", "public"):
-                    print("Give this address to the recipient:")
+                    # print("Give this address to the recipient:")
                     print(url)
+                    CreateJsonFile(url)
                 else:
                     print("Give this address and private key to the recipient:")
                     print(url)
@@ -502,6 +504,24 @@ def main(cwd=None):
         # Shutdown
         web.cleanup()
         onion.cleanup()
+
+
+def CreateJsonFile(url):
+    if os.path.exists("data.json"):
+        os.remove("data.json")
+        try:
+            jsonFile = open("data.json", "w")
+            jsonFile.write(url)
+            jsonFile.close()
+        except Exception as e:
+            print(e)
+    else:
+        try:
+            jsonFile = open("data.json", "w")
+            jsonFile.write(url)
+            jsonFile.close()
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
